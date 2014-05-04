@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Obscura</title>
+<link rel="stylesheet" type="text/css" media="all" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/media-queries.css" />
+<link rel="stylesheet" type="text/css" href="js/player/mediaelementplayer.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,700,700italic|Open+Sans+Condensed:300,700' rel="stylesheet" type='text/css'>
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="stylesheets/ie8.css" media="all" />
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="stylesheets/ie9.css" media="all" />
+<![endif]-->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+<script type="text/javascript" src="js/retina.js"></script>
+<script type="text/javascript" src="js/selectnav.js"></script>
+<script type="text/javascript" src="js/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
+<script type="text/javascript" src="js/mediaelement.min.js"></script>
+<script type="text/javascript" src="js/mediaelementplayer.min.js"></script>
+<script type="text/javascript">
+	$.backstretch("images/bg/1.jpg");
+</script>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<!-- Begin Header -->
+<div class="header-wrapper opacity">
+	<div class="header">
+		<!-- Begin Logo -->
+		<div class="logo">
+		    <a href="index.ejs">
+				<img src="images/logo.png" alt="" />
+			</a>
+	    </div>
+		<!-- End Logo -->
+		<!-- Begin Menu -->
+		<div id="menu-wrapper">
+			<div id="menu" class="menu">
+				<ul id="tiny">
+				<li>
+				<a href="index.ejs">Home</a> </li>
+				<li class="active"><a href="/searchuser">Search User </a></li>
+				<li><a href="userreg.ejs">Register New User </a></li>
+				<li><a href="/registermovie">Register New Movie </a></li>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<!-- End Menu -->
+	</div>
+</div>
+<!-- End Header -->
+<!-- Begin Wrapper -->
+<div class="wrapper"><!-- Begin Intro -->
+<div class="intro"> VIDEO LIBRARY MANAGEMENT SYSTEM </div>
+<form action="/searchuser"  method="post">
+ Search User: <input type="text" name="search" required> By: <select name="criteria">
+ <option value="EMAIL"> Email </option>
+ <option value="user_id"> Membership id </option>
+ <option value="first_name"> First Name </option>
+ <option value="last_name"> Last Name </option>
+ </select>
+ <button type="submit" class="button blue"> Search </button>
+ </form>
+<ul class="social">
+<li><a class="rss" href="#"></a></li><li><a class="facebook" href="#"></a></li><li><a class="twitter" href="#"></a></li><li><a class="pinterest" href="#"></a></li><li><a class="dribbble" href="#"></a></li><li><a class="flickr" href="#"></a></li><li><a class="linkedin" href="#"></a></li></ul><!-- End Intro --> 
+
+
+
+<!-- Begin Blog Grid -->
+<div class="blog-wrap">
+	<!-- Begin Blog -->
+	<div class="blog-grid">
+		<!-- Begin Image Format -->
+		<div class="post format-image box"> 
+			<div class="frame">
+				
+			</div>
+			
+		<% if(typeof msg!== "undefined") { %>
+<h2>    <%= msg %> </h2>
+<% } %>
+
+<% if(typeof check!=="undefined") { %>
+<h2 class="title">Details</h2>
+<% for (var i=0; i<users.length; i++) { %>
+<h2> First Name: <%= users[i].first_name %> </h2>
+<h2> Last Name: <%= users[i].last_name %></h2>
+<h2> Email: <%= users[i].EMAIL %></h2>
+<h2> Membership id: <%= users[i].user_id %></h2>
+<h2> type_of_user: <%= users[i].type_of_user %></h2>
+<h2> balance: <%= users[i].balance %></h2>
+<h2> Street: <%= users[i].street %></h2>
+<h2> City: <%= users[i].city %></h2>
+<h2> State: <%= users[i].state %></h2>
+<h2> Zipcode: <%= users[i].zipcode %></h2>
+<h2><a href="/deleteuser?uid=<%= users[i].user_id %>" class="button blue">Delete</a></h2>
+<% }}%>	
+			</div>
+		</div>
+		<!-- End Image Format -->
+
+ 	
+		<!-- Begin Quote Format -->
+		
+		<!-- End Quote Format --> 	
+		</div>
+		</div>
+		<!-- Begin Footer -->
+<div class="footer-wrapper">
+<div id="footer" class="four">
+		<div id="first" class="widget-area">
+			<div class="widget widget_search">
+				<h3 class="widget-title">Search</h3>
+				<form class="searchform" method="get" action="#">
+					<input type="text" name="s" value="type and hit enter" onFocus="this.value=''" onBlur="this.value='type and hit enter'"/>
+				</form>
+			</div>
+			<div class="widget widget_archive">
+				<h3 class="widget-title">Archives</h3>
+				<ul>
+					<li><a href="#">September 2012</a> (6)</li>
+					<li><a href="#">August 2012</a> (2)</li>
+					<li><a href="#">July 2012</a> (2)</li>
+					<li><a href="#">June 2012</a> (4)</li>
+					<li><a href="#">May 2012</a> (3)</li>
+					<li><a href="#">January 2012</a> (1)</li>
+				</ul>
+			</div>	
+		</div><!-- #first .widget-area -->
+	
+		<div id="second" class="widget-area">
+			<div id="twitter-2" class="widget widget_twitter">
+					<h3 class="widget-title">Twitter</h3>
+					
+					<div id="twitter-wrapper">
+						<div id="twitter"></div>
+						<span class="username"><a href="http://twitter.com/elemisdesign">→ Follow @elemisdesign</a></span>
+					</div>
+			</div>
+		</div><!-- #second .widget-area -->
+	
+		<div id="third" class="widget-area">
+		<div id="example-widget-3" class="widget example">
+			<h3 class="widget-title">Popular Posts</h3>
+			<ul class="post-list">
+			  	<li> 
+			  		<div class="frame">
+			  			<a href="#"><img src="images/art/s1.jpg" /></a>
+			  		</div>
+					<div class="meta">
+					    <h6><a href="#">Charming Winter</a></h6>
+					    <em>28th Sep 2012</em>
+				    </div>
+				</li>
+				<li> 
+			  		<div class="frame">
+			  			<a href="#"><img src="images/art/s2.jpg" /></a>
+			  		</div>
+					<div class="meta">
+					    <h6><a href="#">Trickling Stream</a></h6>
+					    <em>5th Sep 2012</em>
+				    </div>
+				</li>
+				<li> 
+			  		<div class="frame">
+			  			<a href="#"><img src="images/art/s3.jpg" /></a>
+			  		</div>
+					<div class="meta">
+					    <h6><a href="post.ejs">Morning Glory</a></h6>
+					    <em>26th Sep 2012</em>
+				    </div>
+				</li>
+			</ul>
+			
+		</div>
+		</div><!-- #third .widget-area -->
+		
+		<div id="fourth" class="widget-area">
+		<div class="widget">
+			<h3 class="widget-title">Flickr</h3>
+			<ul class="flickr-feed"></ul>
+			
+		</div>
+		</div><!-- #fourth .widget-area -->
+	</div>
+</div>
+<div class="site-generator-wrapper">
+	<div class="site-generator">Copyright Obscura 2012. Design by <a href="http://elemisfreebies.com">elemis</a>. All rights reserved.</div>
+</div>
+<!-- End Footer --> 
+<script type="text/javascript" src="js/scripts.js"></script>
+</body>
+</html>
