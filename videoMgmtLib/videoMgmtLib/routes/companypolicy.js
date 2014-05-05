@@ -35,7 +35,7 @@ exports.calculateFine = function(){
 		else
 		{	console.log('no data found');	}
 	});
-	
+
 	var selectInActiveUsers = "select user_id,type_of_user,registration_time from users";
 	var params = [];
 	sqlquery.execQuery(selectInActiveUsers, params, function(err, rows) {

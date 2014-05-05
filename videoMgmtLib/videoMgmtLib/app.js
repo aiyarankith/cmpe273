@@ -52,7 +52,7 @@ http.createServer(app, requestLog()).listen(app.get('port'));
 
 /*cron job logic*/
 /*var CronJob = require('cron').CronJob;
-new CronJob('00 45 02 * * *', function(){
+new CronJob('00 13 06 * * *', function(){
 	console.log("---------------------------------enter  cron");
 	cronjob.calculateFine();
 }, null, true, "America/Los_Angeles");*/
