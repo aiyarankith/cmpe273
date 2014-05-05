@@ -99,12 +99,12 @@
 	<!-- Member Search Details -->
 		<div class="post format-link box"> 
 
-			<h2 class="title">Search Memebers <span class="arrow">&rarr;</span></h2>
+			<h2 class="title">Search Members <span class="arrow">&rarr;</span></h2>
 			<p>Search for the Registered Members by Member ID, First Name, Last Name or Email ID</p>
 	
 			<div class="widget widget_search">
 				<form class="searchform" method="post" action="/searchuser/0">
-					<input type="text" name="search" value="search for members..." onFocus="this.value=''" required/>
+					<input type="text" name="search" placeholder="search for members..." onFocus="this.value=''" />
 					<br><br>
 					Search By : <select name="criteria"> <id="crieria">
 					<option value="user_id" default>Member ID </option>
@@ -141,8 +141,8 @@
 			
 			<div class="widget widget_search">
 			<form class="searchform" method="post" action="/showMovieList/0">
-					<input type="text" name="member_id" value="Member ID..." onFocus="this.value=''" required/>
-					<input type="text" name="search" value="search for..." onFocus="this.value=''"/>
+					<input type="text" name="member_id" placeholder="member id..." onFocus="this.value=''" required/>
+					<input type="text" name="search" placeholder="search for..." onFocus="this.value=''"/>
 					<br><br>
 					Search By : <select name="category"> <id="category">
 					<option value="MOVIE_NAME" default>Movie Name</option>

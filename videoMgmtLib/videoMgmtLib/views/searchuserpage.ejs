@@ -94,9 +94,11 @@
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <a href="index.ejs">
-				<img src="http://localhost:4400/images/logo.png" alt="" />
-			</a>
+		    <% if (typeof admin_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
+		    <% } else { %>
+		    	<h2>Welcome</h2>
+		    <% } %>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
@@ -104,11 +106,10 @@
 			<div id="menu" class="menu">
 				<ul id="tiny">
 				<li class="active">
-				<a href="admin_home">Home</a> </li>
+				<a href="/admin_home">Home</a> </li>
 				<li><a href="userreg">Register New User </a></li>
 				<li><a href="/registermovie">Register New Movie </a></li>
-				
-				
+				<li><a href="/movie/cart/show">Cart </a></li>
 				<% if (typeof admin_fname != 'undefined') { %>
 					<li><a href="/logout">Logout</a></li>
 				<% } else { %>
@@ -120,9 +121,8 @@
 		</div>
 		<div class="clear"></div>
 		<!-- End Menu -->
-		</div>
-		</div>
-	
+	</div>
+</div>
 <!-- End Header -->
 <!-- Begin Wrapper -->
 <div class="wrapper"><!-- Begin Intro -->
@@ -184,7 +184,7 @@
 			<input type='hidden'  name='criteria' id='category' value="<%= criteria %>" />
 			<input type='hidden'  name='type' id='type' value="<%= type %>" />
 			<input type='hidden'  name='nextlast' id='nextlast' value="last" />
-			<input type="submit" name="last" value="last"/>
+			<input type="submit" name="last" value=" Previous " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black" />
 		</form>
 	</td>
 		<td>
@@ -193,7 +193,7 @@
 			<input type='hidden'  name='criteria' id='category' value="<%= criteria %>" />
 			<input type='hidden'  name='type' id='type' value="<%= type %>" />
 			<input type='hidden'  name='nextlast' id='nextlast' value="next" />
-			<input type="submit" name="next" value="next"/>
+			<input type="submit" name="next" value=" Next " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black"/>
 		</form>
 		</td>
 	</tr>

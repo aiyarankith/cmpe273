@@ -85,9 +85,14 @@
 				<h3>City : <%=member_details[i].city%> <br></h3>
 				<h3>State : <%=member_details[i].state%> <br></h3>
 				<h3>Zipcode : <%=member_details[i].zipcode%> <br></h3>
-				<a id="editOption" href="/changepass" class="button yellow">Change Password</a> <br><br>
 				
 			<% } %>
+			<% if (typeof available != 'undefined') { %>
+			<h3>Number of movies you can rent now : <%=available%> <br></h3>
+			<% } else { %>
+			<% } %>
+			
+			<a id="editOption" href="/changepass" class="button yellow">Change Password</a> <br><br>
 			
 			<h2>Movie History</h2>
 

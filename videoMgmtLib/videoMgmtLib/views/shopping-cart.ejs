@@ -86,33 +86,28 @@ function validateChange() {
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <a href="/index.ejs">
-				<img src="http://localhost:4400/images/logo.png" alt="" />
-			</a>
+		    <% if (typeof admin_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
+		    <% } else { %>
+		    	<h2>Welcome</h2>
+		    <% } %>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-					<li><a href="/index.ejs">Blog</a>
-						<ul>
-							<li><a href="/post.ejs">Blog Post</a></li>
-						</ul>
-					</li>
-					<li class="active"><a href="/page-with-sidebar.ejs">Pages</a>
-						<ul>
-							<li><a href="/page-with-sidebar.ejs">Page With Sidebar</a></li>
-							<li><a href="/full-width.ejs">Full Width</a></li>
-						</ul>
-					</li>
-					<li><a href="/typography.ejs">Styles</a>
-						<ul>
-							<li><a href="/typography.ejs">Typography</a></li>
-							<li><a href="/columns.ejs">Columns</a></li>
-						</ul>
-					</li>
-					<li><a href="/contact.ejs">Contact</a></li>
+				<li class="active">
+				<a href="/admin_home">Home</a> </li>
+				<li><a href="userreg">Register New User </a></li>
+				<li><a href="/registermovie">Register New Movie </a></li>
+				<li><a href="/movie/cart/show">Cart </a></li>
+				<% if (typeof admin_fname != 'undefined') { %>
+					<li><a href="/logout">Logout</a></li>
+				<% } else { %>
+				<% } %>
+				
+						
 				</ul>
 			</div>
 		</div>
@@ -170,6 +165,9 @@ function validateChange() {
     <strong>Your total</strong> <em>&dollar;<%= total %></em>
  	<form name='checkout' action='/confirmOrder' method='post'>
 		<button class="button blue">Confirm order</button>
+	</form><br>
+	<form name='clear_cart' action='/movie/cart/clear' method='post'>
+		<button class="button blue">Clear Cart</button>
 	</form>
 </div>
 <% } else { %>

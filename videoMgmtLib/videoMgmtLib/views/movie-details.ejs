@@ -213,11 +213,10 @@ function getConfirmation()
 				<input class="button red" name='submit' type='submit' value='save (alt+s)' accesskey="s"/>
 		</form>
 <form name="deleteForm" method="post" action="/movie/delete/<%= m_id %>">
-    <input type="hidden" name="param1" value="param1Value">
     <a class="button blue" onclick='return getConfirmation()' href="javascript:document.deleteForm.submit()">delete</a>
 </form>
 <form name="listRentedMembersForm" method="post" action="/listRentedMembers/<%= m_id %>">
-    <a class="button blue" href="javascript:document.addToCartForm.submit()">who rented?</a>
+    <a class="button blue" href="javascript:document.listRentedMembersForm.submit()">who rented?</a>
 </form>
 
 		</div>

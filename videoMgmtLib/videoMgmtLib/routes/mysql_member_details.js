@@ -59,7 +59,7 @@ exports.deleteuser=function(req,res){
     		console.log("Error in deleting user");
     	}
     	else{
-    		res.render('admin_home',{deletemsg: "User has been deleted with Membership id", mem_id:param });
+    		res.render('admin_home',{deletemsg: "User has been deleted with Membership id", admin_fname:req.session.admin_fname});
       	    }
     });
 };

@@ -52,8 +52,8 @@ http.createServer(app, requestLog()).listen(app.get('port'));
 
 /*cron job logic*/
 /*var CronJob = require('cron').CronJob;
-new CronJob('00 52 00 * *', function(){
-	console.log("enter  cron");
+new CronJob('00 45 02 * * *', function(){
+	console.log("---------------------------------enter  cron");
 	cronjob.calculateFine();
 }, null, true, "America/Los_Angeles");*/
 
@@ -144,6 +144,15 @@ app.post('/changepass',profile.changepassworddb);
 //Client Side Profile Page
 app.get('/changepass',profile.changepassword);
 
+/*app.get('/changepassword', function(req,res){
+	console.log("Session at Change Pwd: : ", req.session.user_fname);
+	res.render('changepassword',{
+		user_fname:req.session.user_fname, 
+		user_member_id:req.session.user_member_id,
+	});
+});*/
+
+
 //To handle movie details: Show specific movie details, Update movie, Delete movie, and Add to cart. 
 app.get('/movie/show/:m_id', movie.show);
 app.post('/movie/update/:m_id', movie.update);
@@ -151,7 +160,7 @@ app.post('/movie/delete/:m_id', movie.unPublish);
 app.post('/movie/cart/add/:m_id', cart.add);
 app.get('/movie/cart/remove/:m_id', cart.remove);
 app.get('/movie/cart/show', cart.view);
-//app.get('/movie/cart/clear', cart.clearCart);
+app.post('/movie/cart/clear', cart.clearCart);
 app.post('/confirmOrder', cart.confirmOrder);
 
 

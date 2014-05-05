@@ -1,3 +1,4 @@
+
 /*
  * To handle movie details.
  * GET - Show specific movie details,
@@ -42,7 +43,6 @@ exports.show = function(req, res) {
 };
 exports.update = function (req, res) {
 	var query = require('./dbConnectivity/mysqlQuery');
-	var product;
 	var sqlStmt = "update movies set movie_name = ?," +
 	" movie_banner = ?," +
 	" release_date = ?," +
@@ -59,49 +59,46 @@ exports.update = function (req, res) {
 				res.redirect(req.get('referer'));
 			} else {
 				res.status = 500;
-				res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+				res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, error_message: 'Sorry! Something went wrong'}});
 			}
 		} catch (e) {
 			console.log('Error>>'+e.message);
 			res.status = 500;
-			res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+			res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, error_message: 'Sorry! Something went wrong'}});
 		}
 	});
 };
 
 exports.unPublish = function (req, res) {
 	var query = require('./dbConnectivity/mysqlQuery');
-	var product;
 	var sqlStmt = "update movies set" +
 	" is_published = ?" +
 	" where movie_id = ?";
 	console.log("movie id to be deleted->"+req.param('m_id'));
-	var params = [req.param('is_published'), req.param('m_id')];
+	var params = [false, req.param('m_id')];
 	query.execQuery(sqlStmt, params, function(err, rows) {
 		try {
-			console.log(rows.length );
-			if(rows.length !== 0) {
+			if(err) {
 				res.redirect(req.get('referer'));
 			} else {
-				res.status = 500;
-				res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+				res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, message: 'Movie deleted!'}});
 			}
 		} catch (e) {
 			console.log('Error>>'+e.message);
 			res.status = 500;
-			res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+			res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, error_message: 'Sorry! Something went wrong'}});
 		}
 	});
 };
 
 exports.showMovieList = function (req, res) {
 	var sqlquery = require('./dbConnectivity/mysqlQuery');
-	if(req.session.mem_id == null)
+	if(req.session.mem_id == null || req.param('member_id') !== req.session.mem_id)
 	{
 		req.session.mem_id = req.param('member_id');
 		console.log("*******************"+req.session.mem_id);
 	}
-	//connection.escape(userId) to avoid SQL Injection attacks
+//	connection.escape(userId) to avoid SQL Injection attacks
 	var searchCriteria = req.param('search');
 	var category = req.param('category');
 	var movieIndex = req.param('movieIndex');
@@ -110,7 +107,7 @@ exports.showMovieList = function (req, res) {
 	if(movieIndex===''){
 		if(nextlast==='next')
 		{
-			sqlStmt = "select * from MOVIES limit "+movieIndex+",10";
+			sqlStmt = "select * from MOVIES where is_published = 1 limit "+movieIndex+",10";
 			movieIndex = parseInt(movieIndex) + 10;
 		}
 		else
@@ -119,14 +116,14 @@ exports.showMovieList = function (req, res) {
 			{movieIndex=0;}
 			else
 			{movieIndex = parseInt(movieIndex) - 20;}
-			sqlStmt = "select * from MOVIES limit "+movieIndex+",10";
+			sqlStmt = "select * from MOVIES where is_published = 1 limit "+movieIndex+",10";
 			movieIndex = parseInt(movieIndex) + 10;
 		}
 	}
 	else{
 		if(nextlast==='next')
 		{
-			sqlStmt = "select * from MOVIES where "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
+			sqlStmt = "select * from MOVIES where is_published = 1 and "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
 			movieIndex = parseInt(movieIndex) + 10;
 		}
 		else
@@ -135,7 +132,7 @@ exports.showMovieList = function (req, res) {
 			{movieIndex=0;}
 			else
 			{movieIndex = parseInt(movieIndex) - 20;}
-			sqlStmt = "select * from MOVIES where "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
+			sqlStmt = "select * from MOVIES where is_published = 1 and "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
 			movieIndex = parseInt(movieIndex) + 10;
 		}	
 	}
@@ -162,3 +159,5 @@ exports.showMovieList = function (req, res) {
 		}
 	});
 };
+
+

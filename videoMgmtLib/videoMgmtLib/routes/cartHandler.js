@@ -106,8 +106,11 @@ exports.remove = function (req, res) {
 			cart.pop();
 		}
 	}
+	if (cart.length <= 0) {
+		cart = null;
+	}
 	res.cookie('cartCookie', '1', {maxAge: null, httpOnly: false, signed: true, cart: cart});
-	res.render('shopping-cart', { title: 'Shopping Bag', admin_fname: req.session.admin_fname, cart: cart, message: null, total: total} );
+	res.render('shopping-cart', { title: 'Shopping Bag', admin_fname: req.session.admin_fname, cart: cart, message: null, total: total, fine: fineAmt} );
 };
 
 exports.view = function (req, res) {
@@ -134,7 +137,7 @@ exports.view = function (req, res) {
 		total = parseInt(fine) + parseInt(total);
 	}
 	console.log(" aftertotal");
-	res.render('shopping-cart', { title: 'Shopping Bag', username: req.session.username, cart: cart, message: null, total: total, fine: fineAmt} );
+	res.render('shopping-cart', { title: 'Shopping Bag', admin_fname: req.session.admin_fname, cart: cart, message: null, total: total, fine: fineAmt} );
 };
 
 
@@ -179,11 +182,17 @@ exports.confirmOrder = function (req, res) {
 	req.session.mem_id = null;
 };
 
-function clearCart(req, res) {
+exports.clearCart = function (req, res) {
 	res.clearCookie('cartCookie');
-	req.session = null;
-	res.redirect('/');
-}
+	req.session.mem_id = null;
+	req.session.balance = null;
+	req.session.mem_type = null;
+	cart = null;
+	total = '0.00';
+	fineAmt = '0.00';
+	res.render('admin_home', { title: 'VLM', admin_fname: req.session.admin_fname, cart: cart, message: 'Cart Cleared!'});
+	
+};
 /*
  * 
 var query = require('./dbConnectivity/mysqlQuery');

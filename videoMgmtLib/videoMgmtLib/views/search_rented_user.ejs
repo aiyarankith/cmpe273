@@ -39,6 +39,10 @@
 <script type="text/javascript" src="http://localhost:4400/js/twitter.min.js"></script>
 <script type="text/javascript" src="http://localhost:4400/js/oneSimpleTablePaging-1.0.js"></script>
 
+
+<script type="text/javascript">
+	$.backstretch("http://localhost:4400/images/bg/1.jpg");
+</script>
 <script>
 (function(document) {
 	'use strict';
@@ -80,9 +84,7 @@
 
 })(document);
 </script>
-<script type="text/javascript">
-	$.backstretch("http://localhost:4400/images/bg/1.jpg");
-</script>
+
 </head>
 <body>
 <div class="scanlines"></div>
@@ -92,11 +94,9 @@
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <% if (typeof admin_fname != 'undefined') { %>
-		    	<h2>Welcome, <%= admin_fname %></h2>
-		    <% } else { %>
-		    	<h2>Welcome</h2>
-		    <% } %>
+		    <a href="index.ejs">
+				<img src="http://localhost:4400/images/logo.png" alt="" />
+			</a>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
@@ -104,11 +104,11 @@
 			<div id="menu" class="menu">
 				<ul id="tiny">
 				<li class="active">
-				<a href="/admin_home">Home</a> </li>
+				<a href="admin_home">Home</a> </li>
 				<li><a href="userreg">Register New User </a></li>
 				<li><a href="/registermovie">Register New Movie </a></li>
-				<li><a href="/searchuser">Search </a></li>
-				<li><a href="/movie/cart/show">Cart </a></li>
+				
+				
 				<% if (typeof admin_fname != 'undefined') { %>
 					<li><a href="/logout">Logout</a></li>
 				<% } else { %>
@@ -120,10 +120,10 @@
 		</div>
 		<div class="clear"></div>
 		<!-- End Menu -->
-	</div>
-</div>
+		</div>
+		</div>
+	
 <!-- End Header -->
-
 <!-- Begin Wrapper -->
 <div class="wrapper"><!-- Begin Intro -->
 <div class="intro"> VIDEO LIBRARY MANAGEMENT SYSTEM </div>
@@ -131,8 +131,12 @@
 
 <div class="blog-grid">
 <div class="container" align="center">
+
 	<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>
+	<tr>
+	<td>
+	</td>
+	</tr>
 	<table width="100%">
 			<tr>
 				<td colspan="5">
@@ -140,53 +144,31 @@
 				</td>
 			</tr>
 	</table>
-	</td></tr>
 	<tr><td>
+	
+	
 	<table class="order-table table" style="margin:0;" id="rounded-corner">
 		<thead>
 			<tr>
-				<th>Movie Name</th>
-				<th>Movie Banner</th>
-				<th style="width: 100px;">Release Date</th>
-				<th style="width: 100px;">Rent Amount</th>
-				<th>Category</th>
-				<th style="width: 120px;">Available Copies</th>
+				<th>  Membership ID </th>
+				<th>  First Name </th>
+				<th>  Last Name </th> 
+				<th>  Type_of_user </th>
 			</tr>
 		</thead>
 		<tbody>
-			<% for(var i in movieResults){%>
+			<% for(var i in users){%>
 			<tr>
-				<td><a href="/movie/show/<%=movieResults[i].MOVIE_ID%>"><%= movieResults[i].MOVIE_NAME %></a></td>
-				<td><%= movieResults[i].MOVIE_BANNER%></td>
-				<td><%= movieResults[i].RELEASE_DATE%></td>
-				<td><%= movieResults[i].RENT_AMOUNT%></td>
-				<td><%= movieResults[i].CATEGORY%></td>
-				<td><%= movieResults[i].AVAILABLE_COPIES%></td>
-			</tr>
-			<% }; %> 
+				<td> <%= users[i].user_id %> </td>
+				<td> <%= users[i].first_name %> </td> 
+				<td> <%= users[i].last_name %> </td> 
+				<td> <%= users[i].type_of_user %> </td>
+			</tr>	
+			<% } %> 
 	</tbody>
 	</table>
 	</td></tr>
-	<table>
-	<tr>
-	<td>
-		<form name="formname" method="post" action="/showMovieList/<%=movieIndex%>">
-			<input type='hidden'  name='search' id='search' value="<%= search %>" />
-			<input type='hidden'  name='category' id='category' value="<%= category %>" />
-			<input type='hidden'  name='nextlast' id='nextlast' value="last" />
-			<input type="submit" name="last" value=" Previous " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black" />
-		</form>
-	</td>
-		<td>
-		<form name="formname" method="post" action="/showMovieList/<%=movieIndex%>">
-			<input type='hidden'  name='search' id='search' value="<%= search %>" />
-			<input type='hidden'  name='category' id='category' value="<%= category %>" />
-			<input type='hidden'  name='nextlast' id='nextlast' value="next" />
-			<input type="submit" name="next" value=" Next " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black"/>
-		</form>
-		</td>
-	</tr>
-	</table>
+	
 	</table>
 </div>
 </div>

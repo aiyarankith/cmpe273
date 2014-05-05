@@ -20,18 +20,22 @@ exports.returnmovie=function(req,res){
 	var sql="select AVAILABLE_COPIES from movies where MOVIE_ID=?";
 	query.execQuery(sql,req.param('mid2'),function(err,rows){
 		if(rows.length!=0){
-			var nowavailble=rows[0].AVAILABLE_COPIES+1;
+
+			var old=rows[0].AVAILABLE_COPIES;
+
+			var newavailable=parseInt(old) + 1;
+
 			var sql1='update movies set AVAILABLE_COPIES=? where MOVIE_ID=?';
-			query.execQuery(sql1,[nowavailble,req.param('mid')],function(err,rows){
+			query.execQuery(sql1,[newavailable,req.param('mid2')],function(err,rows){
 				if(err){
 					console.log("cannot modify records");
 				}
 				else{
 					res.redirect('member_details?id='+uid);
-					
+
 				}
 			});
 		}
 	});
-	
+
 };
