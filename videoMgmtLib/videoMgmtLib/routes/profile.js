@@ -1,7 +1,12 @@
 //Change Client Password 
 
 exports.changepassword=function(req,res){
-	res.render('changepassword');
+	console.log("Session at Change Pwd: : ", req.session.user_fname);
+		res.render('changepassword',{
+			user_fname:req.session.user_fname, 
+			user_member_id:req.session.member_id,
+		});
+	
 };
 
 exports.changepassworddb=function(req,res){
@@ -19,7 +24,7 @@ exports.changepassworddb=function(req,res){
 		}
 		if(pwd===oldpwd){
 			var sqlStmt='update users set password=? where user_id=?';
-			 var params=[req.param('newpwd'),req.session.member_id];
+			var params=[req.param('newpwd'),req.session.member_id];
 			query.execQuery(sqlStmt,params,function(err,rows){
 				if (err) {
 					console.log('Error in Updating Records');
@@ -35,8 +40,11 @@ exports.changepassworddb=function(req,res){
 			});
 		}
 		else{
-			
-			res.render('changepassword',{nomatch:"Your Old Password is not Correct"});
+
+			res.render('changepassword',{nomatch:"Your Old Password is not Correct", user_fname:req.session.user_fname, 
+				user_member_id:req.session.member_id,
+				member_details: req.session.user_details,
+				movie_details: req.session.movie_details});
 		}
 	});
 };

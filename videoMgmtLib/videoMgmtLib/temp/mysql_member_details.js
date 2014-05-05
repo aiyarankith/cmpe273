@@ -1,6 +1,9 @@
 /**
- * New node file to Retrive Member Details and Update the details.
+ * New node file to Retrive Member Details, Update the details and delete the details
  */
+
+
+
 
 function fetch_details(callback, id){
 	var connection      = require('./dbConnectivity/mysqlQuery');
@@ -49,7 +52,6 @@ function update_customer(user_id, f_name, l_name, email, street, city, state, zi
 	
 	
 }
-
 exports.deleteuser=function(req,res){
 	var query =require('./dbConnectivity/mysqlQuery');
     var param=req.param('uid');
@@ -63,6 +65,7 @@ exports.deleteuser=function(req,res){
       	    }
     });
 };
+
 
 exports.fetch_details = fetch_details;
 exports.fetch_history = fetch_history;

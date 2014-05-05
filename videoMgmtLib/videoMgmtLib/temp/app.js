@@ -16,12 +16,11 @@ var application_root = __dirname
 , movie = require('./routes/movieHandler')
 , cart = require('./routes/cartHandler')
 , searchuser=require('./routes/searchuser')
-, returnmovies= require ('./routes/returnmovies')
 , addmovie = require('./routes/addmovie')
 , cronjob = require('./routes/companypolicy')
 , app = express(); // To create an express server.
 var mysql_member_details = require("./routes/mysql_member_details");
-
+var returnmovies= require ('./routes/returnmovies');
 //all environments
 app.set('port', process.env.PORT || 4400);
 app.set('views', __dirname + '/views');
@@ -52,11 +51,10 @@ http.createServer(app, requestLog()).listen(app.get('port'));
 
 /*cron job logic*/
 /*var CronJob = require('cron').CronJob;
-new CronJob('00 52 00 * *', function(){
-	console.log("enter  cron");
+new CronJob('* * * * *', function(){
 	cronjob.calculateFine();
-}, null, true, "America/Los_Angeles");*/
-
+}, null, true, "America/Los_Angeles");
+*/
 /*
  * List of routes
  */
@@ -144,64 +142,58 @@ app.post('/changepass',profile.changepassworddb);
 //Client Side Profile Page
 app.get('/changepass',profile.changepassword);
 
-//To handle movie details: Show specific movie details, Update movie, Delete movie, and Add to cart. 
-app.get('/movie/show/:m_id', movie.show);
-app.post('/movie/update/:m_id', movie.update);
-app.post('/movie/delete/:m_id', movie.unPublish);
-app.post('/movie/cart/add/:m_id', cart.add);
-app.get('/movie/cart/remove/:m_id', cart.remove);
-app.get('/movie/cart/show', cart.view);
-//app.get('/movie/cart/clear', cart.clearCart);
-app.post('/confirmOrder', cart.confirmOrder);
+//	To handle movie details: Show specific movie details, Update movie, Delete movie, and Add to cart. 
+	app.get('/movie/show/:m_id', movie.show);
+	app.post('/movie/update/:m_id', movie.update);
+	app.post('/movie/delete/:m_id', movie.unPublish);
+	app.post('/movie/cart/add/:m_id', cart.add);
+	app.post('/movie/cart/remove/:m_id', cart.remove);
+	app.get('/movie/cart/show/:m_id', cart.view);	
 
-
-
-//Member Search Results Page
-app.post('/searchuser/:userIndex',searchuser.searchuser);
-//List users who rented particular movie
-app.post('/listRentedMembers/:mid',searchuser.listRentedMembers);
+//	Member Search Results Page
+	app.post('/searchuser/:userIndex',searchuser.searchuser);
+// List users who rented particular movie
+	app.post('/listRentedMembers/:mid',searchuser.listRentedMembers);
 
 
 
 
-//Member Details Page
-app.get('/member_details', function(req, res){
-	mysql_member_details.fetch_details(function(err,result1){
-		console.log("Member Details: ", result1);
-		if(err){
-			throw err;
-		}
-		else {
-			mysql_member_details.fetch_history(function(err,result2){
-				console.log("Member History 1: ", result1);
-				console.log("Member History 2: ", result2);
+//	Member Details Page
+	app.get('/member_details', function(req, res){
+		mysql_member_details.fetch_details(function(err,result1){
+			console.log("Member Details: ", result1);
+			if(err){
+				throw err;
+			}
+			else {
+				mysql_member_details.fetch_history(function(err,result2){
+					console.log("Member History 1: ", result1);
+					console.log("Member History 2: ", result2);
 
-				if(err){
-					throw err;
-				}else{
-					res.render('member_details.ejs',
-							{title: "Member Details",
-						results : result1,
-						results1: result2
-							});
-				}
-			},req.param("id"));
+					if(err){
+						throw err;
+					}else{
+						res.render('member_details.ejs',
+								{title: "Member Details",
+							results : result1,
+							results1: result2
+								});
+					}
+				},req.param("id"));
 
-		}
-	},req.param("id"));
+			}
+		},req.param("id"));
 
-});
+	});
 
-//Return a movie held by user
-app.post('/returnmovie', returnmovies.returnmovie);
-
+//	Edit Customer Details
+	app.post('/user/update', function(req, res){
+		mysql_member_details.update_customer(req.param("user_id"),req.param("f_name"),req.param("l_name"),req.param("email"),req.param("street"),req.param("city"),req.param("state"),req.param("zipcode"));
+		res.redirect(req.get('referer'));
+	});
 
 //Delete Customer Details
 app.get('/deleteuser', mysql_member_details.deleteuser);
 
-//Edit Customer Details
-app.post('/user/update', function(req, res){
-	mysql_member_details.update_customer(req.param("user_id"),req.param("f_name"),req.param("l_name"),req.param("email"),req.param("street"),req.param("city"),req.param("state"),req.param("zipcode"));
-	res.redirect(req.get('referer'));
-});
-
+// Return a movie held by user
+app.post('/returnmovie', returnmovies.returnmovie);

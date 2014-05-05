@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title><%=title%></title>
+<title>Home</title>
 <link rel="stylesheet" type="text/css" media="all" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/media-queries.css" />
 <link rel="stylesheet" type="text/css" href="js/player/mediaelementplayer.css" />
@@ -23,42 +23,37 @@
 <script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 <script type="text/javascript" src="js/mediaelement.min.js"></script>
 <script type="text/javascript" src="js/mediaelementplayer.min.js"></script>
-<script type="text/javascript" src="js/jquery.dcflickr.1.0.js"></script>
-<script type="text/javascript" src="js/twitter.min.js"></script>
+<script type="text/javascript" src="js/jq.js"></script>
+
+
 <script type="text/javascript">
 	$.backstretch("images/bg/1.jpg");
-</script>
-
-<script type="text/javascript"> 
-
-function setEditForm(blockId, linkId) {						  		  						
-
-	if(document.getElementById(blockId).style.display=="none"){ 
-		document.getElementById(blockId).style.display="block"; 
-		document.getElementById(linkId).innerHTML ="Cancel Edit"; 
-	} 
-	else if (document.getElementById(blockId).style.display=="block"){ 
-		document.getElementById(blockId).style.display="none"; 
-		document.getElementById(linkId).innerHTML ="Edit"; 
-	} 
-} 
 </script>
 </head>
 <body>
 <div class="scanlines"></div>
-
 <!-- Begin Header -->
 <div class="header-wrapper opacity">
 	<div class="header">
+		<!-- Begin Logo -->
+		<div class="logo">
+		    <% if (typeof admin_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
+		    <% } else { %>
+		    	<h2>Welcome</h2>
+		    <% } %>
+	    </div>
+		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
 				<li class="active">
-				<a href="/admin_home">Home</a> </li>
+				<a href="admin_home">Home</a> </li>
 				<li><a href="userreg">Register New User </a></li>
 				<li><a href="/registermovie">Register New Movie </a></li>
-				<li><a href="/movie/cart/show">Cart </a></li>
+				
+				
 				<% if (typeof admin_fname != 'undefined') { %>
 					<li><a href="/logout">Logout</a></li>
 				<% } else { %>
@@ -74,110 +69,143 @@ function setEditForm(blockId, linkId) {
 </div>
 <!-- End Header -->
 
+
 <!-- Begin Wrapper -->
 <div class="wrapper"><!-- Begin Intro -->
 <div class="intro"> VIDEO LIBRARY MANAGEMENT SYSTEM </div>
-<ul class="social">
+  <ul class="social">
 <li><a class="rss" href="#"></a></li><li><a class="facebook" href="#"></a></li><li><a class="twitter" href="#"></a></li><li><a class="pinterest" href="#"></a></li><li><a class="dribbble" href="#"></a></li><li><a class="flickr" href="#"></a></li><li><a class="linkedin" href="#"></a></li></ul><!-- End Intro --> 
 
-<!-- Begin Container -->
-<div class="box">
+<% if(typeof member_id !== 'undefined' && typeof message !== 'undefined') { %>
+<div class="info-box"><%=message%> and the User ID is <%= member_id %></div>
+<% } else { %>
+<% } %>
 
-	<center><h1 class="title">Customer Details</h1></center><br><hr>
+<% if(typeof movie_added_message !== 'undefined') { %>
+<div class="info-box"><%=movie_added_message%> </div>
+<% } else { %>
+<% } %>
+
+<% if(typeof error_message !== 'undefined') { %>
+<div class="warning-box"><%=error_message%></div>
+<% } else { %>
+<% } %>
+
+<!-- Begin Blog Grid -->
+<div class="blog-wrap">
+	<!-- Begin Blog -->
+	<div class="blog-grid">
+	<!-- Member Search Details -->
+		<div class="post format-link box"> 
+
+			<h2 class="title">Search Memebers <span class="arrow">&rarr;</span></h2>
+			<p>Search for the Registered Members by Member ID, First Name, Last Name or Email ID</p>
 	
-	<div class="one-half">
-	<% for (var i in results) {  
-		var user_id=results[i].user_id, 
-		first_name=results[i].first_name,
-		last_name=results[i].last_name;
-		email=results[i].EMAIL;
-		street=results[i].street;
-		city=results[i].city;
-		state=results[i].state;
-		zipcode=results[i].zipcode;
-	%>
-	
-		<h3>Full Name : <%=results[i].first_name%> <%=results[i].last_name%><br></h3>
-		<h3>Email : <%=email%><br></h3>
-		<h3>User Type : <%=results[i].type_of_user%><br></h3>
-		<h3>Account Balance : $<%=results[i].balance%> <br></h3>
-		<h3>Street Address : <%=results[i].street%> <br></h3>
-		<h3>City : <%=results[i].city%> <br></h3>
-		<h3>State : <%=results[i].state%> <br></h3>
-		<h3>Zipcode : <%=results[i].zipcode%> <br></h3>
-		<a id="editOption" href="#" class="button yellow" onclick="setEditForm('editForm','editOption')">Edit</a> 
-		<a href="#" class="button yellow">Shop</a><br><br>
+			<div class="widget widget_search">
+				<form class="searchform" method="post" action="/searchuser/0">
+					<input type="text" name="search" value="search for members..." onFocus="this.value=''" required/>
+					<br><br>
+					Search By : <select name="criteria"> <id="crieria">
+					<option value="user_id" default>Member ID </option>
+					<option value="first_name">First Name</option>
+					<option value="last_name">Last Name</option>
+					<option value="EMAIL">Email</option>
+					<option value="zipcode">Zip Code</option>
+					<option value="city">City</option>
+					<option value="state">State</option>
+					</select>
+					Member Type : <select name="type"> <id="type">
+					<option value="simple" default>Simple</option>
+					<option value="premium">Premium</option>
+					</select>
+				<br><br>
+				<input type = "submit" value = "Search" />
+			</form>
+			</div>
+			<br><br>
+			<div class="details">
+				<span class="icon-standard"><a href="#"></a></span>
+				<span class="likes"><a href="#" class="likeThis"></a></span>
+				<span class="comments"><a href="#"></a></span>
+			</div>
 		
-	<% } %>
-	</div>
-	<div class="one-half last">
-		 
-		<form id="editForm" style="display:none;" action="/user/update?user_id=<%= user_id %>" method="post"> 
-			<center><h2>Edit Customer Details</h2></center> 
-			First Name :<input name="f_name" value="<%= first_name %>"/> 
-			Last Name :<input name="l_name" value="<%= last_name %>"/> 
-			Email :<input name="email" value="<%= email %>"/> 
-			Street :<input name="street" value="<%= street %>"/> 
-			City :<input name="city" value="<%= city %>"/> 
-			State :<input name="state" value="<%= state %>"/> 
-			Zipcode :<input name="zipcode" value="<%= zipcode %>"/> <br>
-			<input name='submit' type='submit' value='Save & Edit (Alt + C)' accesskey="s"/> 
-		 
-	</form>
-	</div>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<h2>Movie History</h2>
+		</div> 
+		<!-- End Member Search -->
+		
+		<!-- Begin Movie Search -->
+ 		<div class="post format-standard box"> 
+
+			<h2 class="title">Search Movies <span class="arrow">&rarr;</span></h2>
+			<p>Search for the Movies by Movie ID, Movie Name, Banner, Category or Release Year</p>
+			
+			<div class="widget widget_search">
+			<form class="searchform" method="post" action="/showMovieList/0">
+					<input type="text" name="member_id" value="Member ID..." onFocus="this.value=''" required/>
+					<input type="text" name="search" value="search for..." onFocus="this.value=''"/>
+					<br><br>
+					Search By : <select name="category"> <id="category">
+					<option value="MOVIE_NAME" default>Movie Name</option>
+					<option value="MOVIE_ID">Movie ID</option>
+					<option value="MOVIE_BANNER">Movie Banner</option>
+					<option value="CATEGORY">Movie Category</option>
+					<option value="RELEASE_DATE">Release Year</option>
+				</select>
+				<br><br>
+				<input type = "submit" value = "Search" />
+			</form>
+			</div>
+			<br><br>
+			<div class="details">
+				<span class="icon-standard"><a href="#"></a></span>
+				<span class="likes"><a href="#" class="likeThis"></a></span>
+				<span class="comments"><a href="#"></a></span>
+			</div>
 
 	
-	<% if (results1.length >=1) { %>		
+		</div>
+		<!-- End Movie Search  --> 										
 	
-	<center><h2>Movie Rented in the Past</h2>	</center>
-		<table>
-			<tr>
-				<th>Transaction ID</th>
-				<th>Movie Name</th>
-				<th>Movie Banner</th>
-				<th>Movie Release Date</th>
-				<th>Rent Amount</th>
+	
+		<!-- Begin Image Format -->
+		<div class="post format-image box"> 
+			<div class="frame">
+				<!-- <a href="adminlogin.ejs">-->
+					<img src="images/art/Upcoming-Marvel-Superhero-Movies.jpg" alt="" />
+				</a>
 				
-				<th>IsReturned</th>
-			</tr>
-			<% for (var i in results1) {  %>
-			<tr>
-				<td><%=results1[i].transaction_id%></td>
-				<td><%=results1[i].movie_name%></td>
-				<td><%=results1[i].movie_banner%></td>
-				<td><%=results1[i].release_date%></td>
-				<td><%=results1[i].rent_amount%></td>
-				
-				<% if (results1[i].is_returned == 0) { %>
-				<form action="/returnmovie" method="post" >
-				<input type="hidden" name= "uid2" value="<%= results1[i].user_id %>">
-				<input type="hidden" name= "mid2" value="<%= results1[i].movie_id %>">
-				<input type="hidden" name= "tid2" value="<%= results1[i].transaction_id %>">
-					<td><input type="submit" class="button blue" value="Return Now" ></td>
-					</form>
-				<% } else { %>
-					<td>Returned</td>
-				<% } %>
-			</tr>
-			<% } %>
-		</table>
-	<% } else { %>
-		<h6> No Movie History to Display </h6>
-	<% } %>
+			</div>
+			<!-- <h2 class="title"><a href="adminlogin.ejs">Admin Login</a></h2> -->
+			<p></p>
+			
+		</div>
+		<!-- End Image Format -->
+			
 
+ 	
+		<!-- Begin Quote Format -->
+		<div class="post format-video box"> 
+		<!--<p> <font size ="9"> Upcoming Movies </font> </p>-->
+		<div class="video frame"><iframe width="560" height="315" src="//www.youtube.com/embed/dYDGqmxMZFI" frameborder="0" allowfullscreen></iframe></div>
+		
+		</div>
+		
+		<!-- End Quote Format --> 	
 
+		
+ 	
+ 	</div>
+	<!-- End Blog -->
 </div>
-<!-- End Container -->
+<!-- End Blog Grid -->
 
-<div class="clear"></div>
+<!-- Begin Page-navi -->
+    <div id="navigation">
+      <div class="nav-previous"><a href="#" ><span class="meta-nav-prev">&larr; Older posts</span></a></div>
+      <!-- 
+			<div class="nav-next"><a href="#" ><span class="meta-nav-next">Newer posts &rarr;</span></a></div>
+			 --> 
+    </div>
+    <!-- End Page-navi --> 
 
 </div>
 <!-- End Wrapper -->
@@ -211,7 +239,7 @@ function setEditForm(blockId, linkId) {
 					
 					<div id="twitter-wrapper">
 						<div id="twitter"></div>
-						<span class="username"><a href="http://twitter.com/elemisdesign">→ Follow @elemisdesign</a></span>
+						<span class="username"><a href="http://twitter.com/elemisdesign">â†’ Follow @elemisdesign</a></span>
 					</div>
 			</div>
 		</div><!-- #second .widget-area -->
@@ -243,7 +271,7 @@ function setEditForm(blockId, linkId) {
 			  			<a href="#"><img src="images/art/s3.jpg" /></a>
 			  		</div>
 					<div class="meta">
-					    <h6><a href="#">Morning Glory</a></h6>
+					    <h6><a href="adminlogin.ejs">Morning Glory</a></h6>
 					    <em>26th Sep 2012</em>
 				    </div>
 				</li>

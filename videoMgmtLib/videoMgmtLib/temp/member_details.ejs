@@ -50,21 +50,22 @@ function setEditForm(blockId, linkId) {
 <!-- Begin Header -->
 <div class="header-wrapper opacity">
 	<div class="header">
+		<!-- Begin Logo -->
+		<div class="logo">
+		    <a href="index.ejs">
+				<img src="images/logo.png" alt="" />
+			</a>
+	    </div>
+		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-				<li class="active">
-				<a href="/admin_home">Home</a> </li>
-				<li><a href="userreg">Register New User </a></li>
-				<li><a href="/registermovie">Register New Movie </a></li>
-				<li><a href="/movie/cart/show">Cart </a></li>
-				<% if (typeof admin_fname != 'undefined') { %>
-					<li><a href="/logout">Logout</a></li>
-				<% } else { %>
-				<% } %>
+					<li>
+				<a href="admin_home">Home</a> </li>
 				
-						
+				<li><a href="userreg.ejs">Register New User </a></li>
+				<li><a href="/registermovie">Register New Movie </a></li>
 				</ul>
 			</div>
 		</div>
