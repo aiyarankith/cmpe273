@@ -54,7 +54,7 @@ http.createServer(app, requestLog()).listen(app.get('port'));
 new CronJob('* * * * *', function(){
 	cronjob.calculateFine();
 }, null, true, "America/Los_Angeles");
-*/
+ */
 /*
  * List of routes
  */
@@ -142,66 +142,68 @@ app.post('/changepass',profile.changepassworddb);
 //Client Side Profile Page
 app.get('/changepass',profile.changepassword);
 
-//	To handle movie details: Show specific movie details, Update movie, Delete movie, and Add to cart. 
-	app.get('/movie/show/:m_id', movie.show);
-	app.post('/movie/update/:m_id', movie.update);
-	app.post('/movie/delete/:m_id', movie.unPublish);
-	app.post('/movie/cart/add/:m_id', cart.add);
-	app.post('/movie/cart/remove/:m_id', cart.remove);
-	app.get('/movie/cart/show/:m_id', cart.view);	
+//To handle movie details: Show specific movie details, Update movie, Delete movie, and Add to cart. 
+app.get('/movie/show/:m_id', movie.show);
+app.post('/movie/update/:m_id', movie.update);
+app.post('/movie/delete/:m_id', movie.unPublish);
+app.post('/movie/cart/add/:m_id', cart.add);
+app.get('/movie/cart/remove/:m_id', cart.remove);
+app.get('/movie/cart/show', cart.view);
+//app.get('/movie/cart/clear', cart.clearCart);
+app.post('/confirmOrder', cart.confirmOrder);
 
-//	Member Search Results Page
-	app.get('/searchuser', searchuser.search);
-//	Member Search Method Call 
-	app.post('/searchuser',searchuser.searchuser);
+//Member Search Results Page
+app.get('/searchuser', searchuser.search);
+//Member Search Method Call 
+app.post('/searchuser',searchuser.searchuser);
 
 
-//	Member Search Results 
-	app.get('/members', function(req, res){
-		mysql_member_details.fetch_results(function(err,results){
-			console.log("Member Results: ", results);
-			if(err){
-				throw err;
-			}else{
-				res.render('member_search_results.ejs',
-						{title: "Member Search Results",
-					results : results,
-						});
-			}
-		});
+//Member Search Results 
+app.get('/members', function(req, res){
+	mysql_member_details.fetch_results(function(err,results){
+		console.log("Member Results: ", results);
+		if(err){
+			throw err;
+		}else{
+			res.render('member_search_results.ejs',
+					{title: "Member Search Results",
+				results : results,
+					});
+		}
 	});
+});
 
-//	Member Details Page
-	app.get('/member_details', function(req, res){
-		mysql_member_details.fetch_details(function(err,result1){
-			console.log("Member Details: ", result1);
-			if(err){
-				throw err;
-			}
-			else {
-				mysql_member_details.fetch_history(function(err,result2){
-					console.log("Member History 1: ", result1);
-					console.log("Member History 2: ", result2);
+//Member Details Page
+app.get('/member_details', function(req, res){
+	mysql_member_details.fetch_details(function(err,result1){
+		console.log("Member Details: ", result1);
+		if(err){
+			throw err;
+		}
+		else {
+			mysql_member_details.fetch_history(function(err,result2){
+				console.log("Member History 1: ", result1);
+				console.log("Member History 2: ", result2);
 
-					if(err){
-						throw err;
-					}else{
-						res.render('member_details.ejs',
-								{title: "Member Details",
-							results : result1,
-							results1: result2
-								});
-					}
-				},req.param("id"));
+				if(err){
+					throw err;
+				}else{
+					res.render('member_details.ejs',
+							{title: "Member Details",
+						results : result1,
+						results1: result2
+							});
+				}
+			},req.param("id"));
 
-			}
-		},req.param("id"));
+		}
+	},req.param("id"));
 
-	});
+});
 
-//	Edit Customer Details
-	app.post('/user/update', function(req, res){
-		mysql_member_details.update_customer(req.param("user_id"),req.param("f_name"),req.param("l_name"),req.param("email"),req.param("street"),req.param("city"),req.param("state"),req.param("zipcode"));
-		res.redirect(req.get('referer'));
-	});
+//Edit Customer Details
+app.post('/user/update', function(req, res){
+	mysql_member_details.update_customer(req.param("user_id"),req.param("f_name"),req.param("l_name"),req.param("email"),req.param("street"),req.param("city"),req.param("state"),req.param("zipcode"));
+	res.redirect(req.get('referer'));
+});
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Home</title>
+<title>Obscura</title>
 <link rel="stylesheet" type="text/css" media="all" href="/stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="/stylesheets/media-queries.css" />
 <link rel="stylesheet" type="text/css" href="/js/player/mediaelementplayer.css" />
@@ -14,7 +14,6 @@
 <!--[if IE 9]>
 <link rel="stylesheet" type="text/css" href="/stylesheets/ie9.css" media="all" />
 <![endif]-->
-
 <script type="text/javascript" src="http://localhost:4400/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="http://localhost:4400/js/ddsmoothmenu.js"></script>
 <script type="text/javascript" src="http://localhost:4400/js/retina.js"></script>
@@ -30,37 +29,90 @@
 <script type="text/javascript">
 	$.backstretch("http://localhost:4400/images/bg/1.jpg");
 </script>
+
+
+<script type="text/javascript">
+function validateStock() {
+	var qty = document.getElementById('hidden_quantity').value;
+	
+	if (name == cname && banner == cbanner && rent_amount == crent_amount && release_date == crelease_date && category == ccategory && quantity == cquantity){
+			alert('No values changed to save'); return false;
+	}	
+	if (name.trim().length == 0 || banner.trim().length == 0 || quantity.trim().length == 0 || release_date.trim().length == 0 || category.trim().length == 0 || name.trim().length == 0 || rent_amount.trim().length == 0) {alert('Empty values not allowed'); return false;	}	
+
+}
+</script>
+
+<script type="text/javascript">
+function validateChange() {
+	var name = document.getElementById('m_name').value;
+	var cname = document.getElementById('cm_name').value;
+	
+	var banner = document.getElementById('banner').value;
+	var cbanner = document.getElementById('cbanner').value;
+	
+	var rent_amount = document.getElementById('rent_amount').value;
+	var crent_amount = document.getElementById('crent_amount').value;
+	
+	var release_date = document.getElementById('release_date').value;
+	var crelease_date = document.getElementById('crelease_date').value;
+	
+	var category = document.getElementById('category').value;
+	var ccategory = document.getElementById('ccategory').value;
+	
+	var quantity = document.getElementById('quantity').value;
+	var cquantity = document.getElementById('cquantity').value;
+	
+	if (name == cname && banner == cbanner && rent_amount == crent_amount && release_date == crelease_date && category == ccategory && quantity == cquantity){
+			alert('No values changed to save'); return false;
+	}
+	
+	if (name.trim().length == 0 || banner.trim().length == 0 || quantity.trim().length == 0 || release_date.trim().length == 0 || category.trim().length == 0 || name.trim().length == 0 || rent_amount.trim().length == 0) {alert('Empty values not allowed'); return false;	}
+	if (name.length > 100) { alert('Maximum length[100] exceeded'); return false; }
+	if (banner.length > 100) { alert('Maximum length[100] exceeded'); return false; }
+	if (release_date.length > 10) { alert('Maximum length[10] exceeded'); return false; }
+	if (rent_amount.length > 20) { alert('Maximum length[10] exceeded'); return false; }
+	if (category.length > 50) { alert('Maximum length[50] exceeded'); return false; }
+	if (quantity.length > 20) { alert('Maximum length[20] exceeded'); return false; }
+}
+</script>
+
 </head>
 <body>
 <div class="scanlines"></div>
+
 <!-- Begin Header -->
 <div class="header-wrapper opacity">
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <% if (typeof admin_fname != 'undefined') { %>
-		    	<h2>Welcome, <%= admin_fname %></h2>
-		    <% } else { %>
-		    	<h2>Welcome</h2>
-		    <% } %>
+		    <a href="/index.ejs">
+				<img src="http://localhost:4400/images/logo.png" alt="" />
+			</a>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-				<li class="active">
-				<a href="/admin_home">Home</a> </li>
-				<li><a href="userreg">Register New User </a></li>
-				<li><a href="/registermovie">Register New Movie </a></li>
-				<li><a href="/searchuser">Search </a></li>
-				<li><a href="/movie/cart/show">Cart </a></li>
-				<% if (typeof admin_fname != 'undefined') { %>
-					<li><a href="/logout">Logout</a></li>
-				<% } else { %>
-				<% } %>
-				
-						
+					<li><a href="/index.ejs">Blog</a>
+						<ul>
+							<li><a href="/post.ejs">Blog Post</a></li>
+						</ul>
+					</li>
+					<li class="active"><a href="/page-with-sidebar.ejs">Pages</a>
+						<ul>
+							<li><a href="/page-with-sidebar.ejs">Page With Sidebar</a></li>
+							<li><a href="/full-width.ejs">Full Width</a></li>
+						</ul>
+					</li>
+					<li><a href="/typography.ejs">Styles</a>
+						<ul>
+							<li><a href="/typography.ejs">Typography</a></li>
+							<li><a href="/columns.ejs">Columns</a></li>
+						</ul>
+					</li>
+					<li><a href="/contact.ejs">Contact</a></li>
 				</ul>
 			</div>
 		</div>
@@ -70,141 +122,64 @@
 </div>
 <!-- End Header -->
 
-
 <!-- Begin Wrapper -->
 <div class="wrapper"><!-- Begin Intro -->
 <div class="intro"> VIDEO LIBRARY MANAGEMENT SYSTEM </div>
-  <ul class="social">
+<ul class="social">
 <li><a class="rss" href="#"></a></li><li><a class="facebook" href="#"></a></li><li><a class="twitter" href="#"></a></li><li><a class="pinterest" href="#"></a></li><li><a class="dribbble" href="#"></a></li><li><a class="flickr" href="#"></a></li><li><a class="linkedin" href="#"></a></li></ul><!-- End Intro --> 
 
-<% if(typeof member_id !== 'undefined' && typeof message !== 'undefined') { %>
-	<div class="info-box"><%=message%> and the User ID is <%= member_id %></div>
-<% } else if(typeof message !== 'undefined') { %>
-	<div class="info-box"><%=message%></div>
-<% } %>
+<!-- Begin Container -->
+<div class="box">
 
-<% if(typeof movie_added_message !== 'undefined') { %>
-<div class="info-box"><%=movie_added_message%> </div>
-<% } else { %>
-<% } %>
+	<div class="two-third last">
 
-<% if(typeof error_message !== 'undefined') { %>
-<div class="warning-box"><%=error_message%></div>
-<% } else { %>
-<% } %>
-
-<!-- Begin Blog Grid -->
-<div class="blog-wrap">
-	<!-- Begin Blog -->
-	<div class="blog-grid">
-	<!-- Member Search Details -->
-		<div class="post format-link box"> 
-
-			<h2 class="title">Search Memebers <span class="arrow">&rarr;</span></h2>
-			<p>Search for the Registered Members by Member ID, First Name, Last Name or Email ID</p>
-	
-			<div class="widget widget_search">
-				<form class="searchform" method="post" action="/showMovieList">
-					<input type="text" name="search_member" value="search for members..." onFocus="this.value=''" required/>
-					<br><br>
-					Search By : <select name="category"> <id="category">
-					<option value="user_id" default>Member ID </option>
-					<option value="first_name">First Name</option>
-					<option value="last_name">Last Name</option>
-					<option value="email">Email</option>
-					</select>
-					Member Type : <select name="type"> <id="type">
-					<option value="simple" default>Simple</option>
-					<option value="premium">Premium</option>
-					</select>
-				<br><br>
-				<input type = "submit" value = "Search" />
-			</form>
-			</div>
-			<br><br>
-			<div class="details">
-				<span class="icon-standard"><a href="#"></a></span>
-				<span class="likes"><a href="#" class="likeThis"></a></span>
-				<span class="comments"><a href="#"></a></span>
-			</div>
-		
-		</div> 
-		<!-- End Member Search -->
-		
-		<!-- Begin Movie Search -->
- 		<div class="post format-standard box"> 
-
-			<h2 class="title">Search Movies <span class="arrow">&rarr;</span></h2>
-			<p>Search for the Movies by Movie ID, Movie Name, Banner, Category or Release Year</p>
-			
-			<div class="widget widget_search">
-			<form class="searchform" method="post" action="/showMovieList/0">
-					<input type="text" name="member_id" value="Member ID..." onFocus="this.value=''" required/>
-					<input type="text" name="search" value="search for..." onFocus="this.value=''"/>
-					<br><br>
-					Search By : <select name="category"> <id="category">
-					<option value="MOVIE_NAME" default>Movie Name</option>
-					<option value="MOVIE_ID">Movie ID</option>
-					<option value="MOVIE_BANNER">Movie Banner</option>
-					<option value="CATEGORY">Movie Category</option>
-					<option value="RELEASE_DATE">Release Year</option>
-				</select>
-				<br><br>
-				<input type = "submit" value = "Search" />
-			</form>
-			</div>
-			<br><br>
-			<div class="details">
-				<span class="icon-standard"><a href="#"></a></span>
-				<span class="likes"><a href="#" class="likeThis"></a></span>
-				<span class="comments"><a href="#"></a></span>
-			</div>
-
-	
-		</div>
-		<!-- End Movie Search  --> 										
-	
-	
-		<!-- Begin Image Format -->
-		<div class="post format-image box"> 
-			<div class="frame">
-				<!-- <a href="adminlogin.ejs">-->
-					<img src="http://localhost:4400/images/art/Upcoming-Marvel-Superhero-Movies.jpg" alt="" />
-				</a>
-				
-			</div>
-			<!-- <h2 class="title"><a href="adminlogin.ejs">Admin Login</a></h2> -->
-			<p></p>
-			
-		</div>
-		<!-- End Image Format -->
-			
-
- 	
-		<!-- Begin Quote Format -->
-		<div class="post format-video box"> 
-		<!--<p> <font size ="9"> Upcoming Movies </font> </p>-->
-		<div class="video frame"><iframe width="560" height="315" src="//www.youtube.com/embed/dYDGqmxMZFI" frameborder="0" allowfullscreen></iframe></div>
-		
-		</div>
-		
-		<!-- End Quote Format --> 	
-
-		
- 	
- 	</div>
-	<!-- End Blog -->
+<h1>Shopping Bag</h1>
+<% if ( cart != null && cart.length != 0) {%>
+<a href="/admin_home">back home</a>
+<table width="100" border="1">
+    <tr>
+        <th scope="col" class="description">Movies</th>
+        <th scope="col" class="options">Options</th>
+        <th align="right" scope="col" class="price">Rent Amount</th>
+    </tr>
+    <% for(var movie in cart) {
+        var m_id = cart[movie].m_id, m_name = cart[movie].m_name, rent_amount = cart[movie].rent_amount; %>
+    <tr>
+        <td align="center" valign="top" class="description">
+        	<p>
+        		<%= m_name %> 
+        	</p>
+       		</td>
+        <td align="left" class="options">
+        	<dl>
+                <dt>Movie ID</dt>
+                <dd><%= m_id %></dd>
+                <dt>Quantity</dt>
+                <dd>1</dd>
+            </dl>
+            <a href="/movie/cart/remove/<%= m_id %>">Remove this item</a>
+        </td>
+        <td align="right" valign="top" class="price">&dollar;<%= rent_amount %></td>
+    </tr>
+    <% } %>
+</table>
+<div class="right">
+    <strong>Subtotal before tax charges</strong> <em>&dollar;<%= total %></em><br />
+    <strong>Tax charges</strong> <em>&dollar; 0.00</em><br />
+    <strong>Includes a fine of </strong> <em>&dollar;<%= fine %></em><br />
+    <strong>Your total</strong> <em>&dollar;<%= total %></em>
+ 	<form name='checkout' action='/confirmOrder' method='post'>
+		<button class="button blue">Confirm order</button>
+	</form>
 </div>
-<!-- End Blog Grid -->
-
-<!-- Begin Page-navi -->
-    <div id="navigation">
-      <div class="nav-previous"><a href="#" ><span class="meta-nav-prev">&larr; Older posts</span></a></div>
-      <!-- 
-			<div class="nav-next"><a href="#" ><span class="meta-nav-next">Newer posts &rarr;</span></a></div>
-			 --> 
-    </div>
-    <!-- End Page-navi --> 
+<% } else { %>
+<p> Bag Empty </p>
+<a href='/admin_home'>Take me to home page</a>
+<% } %>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- End Container -->
 
 </div>
 <!-- End Wrapper -->
@@ -238,7 +213,7 @@
 					
 					<div id="twitter-wrapper">
 						<div id="twitter"></div>
-						<span class="username"><a href="http://twitter.com/elemisdesign">â†’ Follow @elemisdesign</a></span>
+						<span class="username"><a href="http://twitter.com/elemisdesign">→ Follow @elemisdesign</a></span>
 					</div>
 			</div>
 		</div><!-- #second .widget-area -->
@@ -270,7 +245,7 @@
 			  			<a href="#"><img src="http://localhost:4400/images/art/s3.jpg" /></a>
 			  		</div>
 					<div class="meta">
-					    <h6><a href="adminlogin.ejs">Morning Glory</a></h6>
+					    <h6><a href="#">Morning Glory</a></h6>
 					    <em>26th Sep 2012</em>
 				    </div>
 				</li>

@@ -6,7 +6,7 @@
 
 exports.show = function(req, res) {
 	var query = require('./dbConnectivity/mysqlQuery');
-	var product;
+	console.log("mem id in show movie"+req.session.mem_id);
 	var sqlStmt = "select movie_id as m_id, movie_name as m_name, movie_banner as banner, release_date, rent_amount, category, available_copies as quantity from movies where movie_id=? and is_Published = true";
 	console.log(req.param('m_id'));
 	var params = [req.param('m_id')];
@@ -14,7 +14,6 @@ exports.show = function(req, res) {
 		if(rows.length !== 0) {
 			try {
 				var movie = [];
-				var mQty;
 				if (rows[0].quantity <= 0) {
 					mQty = 'Sold Out';
 					console.log('>> Following movie is out of stock: '+ rows[0].m_id);
@@ -29,15 +28,15 @@ exports.show = function(req, res) {
 						quantity : rows[0].quantity
 				};
 				console.log(movie[0].m_name);
-				res.render('movie-details', { title: rows[0].m_name, layout:false,	locals: { username : req.session.username, movie : movie, errorMessage: ""}});
+				res.render('movie-details', { title: rows[0].m_name, layout:false,	locals: { username : req.session.username, movie : movie, errorMessage: "", admin_fname: req.session.admin_fname}});
 			} catch (e) {
 				console.log('Error>>'+e.message);
 				res.status = 500;
-				res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+				res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, error_message: 'Sorry! Something went wrong'}});
 			}
 		} else {
 			res.status = 500;
-			res.render('index', { titile: 'VLM', layout:false, locals: { username: req.session.username, message: 'Sorry! Something went wrong'}});
+			res.render('admin_home', { titile: 'VLM', layout:false, locals: { admin_fname: req.session.admin_fname, error_message: 'Sorry! Something went wrong'}});
 		}
 	});
 };
@@ -145,7 +144,7 @@ exports.showMovieList = function (req, res) {
 		console.log(rows.length);
 		if(rows.length !== 0) {
 			res.render('movielist.ejs',
-					{movieResults:rows,movieIndex:movieIndex,category:category,search:searchCriteria},
+					{movieResults:rows,movieIndex:movieIndex,category:category,search:searchCriteria,admin_fname: req.session.admin_fname},
 					function(err, result) {
 						if (!err) {res.end(result);}
 						else {res.end('An error occurred');console.log(err);}
@@ -155,7 +154,7 @@ exports.showMovieList = function (req, res) {
 		{
 			console.log('no data found');
 			res.render('movielist.ejs',
-					{movieResults:[],movieIndex:movieIndex,category:category,search:searchCriteria},
+					{movieResults:[],movieIndex:movieIndex,category:category,search:searchCriteria,admin_fname: req.session.admin_fname},
 					function(err, result) {
 						if (!err) {res.end(result);}
 						else {res.end('An error occurred');console.log(err);}

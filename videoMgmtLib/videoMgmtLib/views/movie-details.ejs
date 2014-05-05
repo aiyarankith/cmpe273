@@ -14,20 +14,23 @@
 <!--[if IE 9]>
 <link rel="stylesheet" type="text/css" href="/stylesheets/ie9.css" media="all" />
 <![endif]-->
-<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-<script type="text/javascript" src="js/retina.js"></script>
-<script type="text/javascript" src="js/selectnav.js"></script>
-<script type="text/javascript" src="js/jquery.masonry.min.js"></script>
-<script type="text/javascript" src="js/jquery.fitvids.js"></script>
-<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
-<script type="text/javascript" src="js/mediaelement.min.js"></script>
-<script type="text/javascript" src="js/mediaelementplayer.min.js"></script>
-<script type="text/javascript" src="js/jquery.dcflickr.1.0.js"></script>
-<script type="text/javascript" src="js/twitter.min.js"></script>
+
+<script type="text/javascript" src="http://localhost:4400/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/ddsmoothmenu.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/retina.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/selectnav.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/jquery.backstretch.min.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/mediaelement.min.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/mediaelementplayer.min.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/jq.js"></script>
+
+
 <script type="text/javascript">
-	$.backstretch("/images/bg/1.jpg");
+	$.backstretch("http://localhost:4400/images/bg/1.jpg");
 </script>
+
 <script type="text/javascript">
 function setEditForm(blockId, linkId) {
 	if(document.getElementById(blockId).style.display=="none"){
@@ -108,33 +111,29 @@ function getConfirmation()
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <a href="/index.ejs">
-				<img src="images/logo.png" alt="" />
-			</a>
+		    <% if (typeof admin_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
+		    <% } else { %>
+		    	<h2>Welcome</h2>
+		    <% } %>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-					<li><a href="/index.ejs">Blog</a>
-						<ul>
-							<li><a href="/post.ejs">Blog Post</a></li>
-						</ul>
-					</li>
-					<li class="active"><a href="/page-with-sidebar.ejs">Pages</a>
-						<ul>
-							<li><a href="/page-with-sidebar.ejs">Page With Sidebar</a></li>
-							<li><a href="/full-width.ejs">Full Width</a></li>
-						</ul>
-					</li>
-					<li><a href="/typography.ejs">Styles</a>
-						<ul>
-							<li><a href="/typography.ejs">Typography</a></li>
-							<li><a href="/columns.ejs">Columns</a></li>
-						</ul>
-					</li>
-					<li><a href="/contact.ejs">Contact</a></li>
+				<li class="active">
+				<a href="/admin_home">Home</a> </li>
+				<li><a href="userreg">Register New User </a></li>
+				<li><a href="/registermovie">Register New Movie </a></li>
+				<li><a href="/searchuser">Search </a></li>
+				<li><a href="/movie/cart/show">Cart </a></li>
+				<% if (typeof admin_fname != 'undefined') { %>
+					<li><a href="/logout">Logout</a></li>
+				<% } else { %>
+				<% } %>
+				
+						
 				</ul>
 			</div>
 		</div>
@@ -166,8 +165,8 @@ function getConfirmation()
 				category = movie[0].category,
 				quantity = movie[0].quantity %>
 	<div class="two-third last">
-        <h1 ><%= m_name %></h1>
-        <h4><%= banner %></h4>
+        <h1><b>Movie Name:</b> <%= m_name %></h1>
+        <h4><b>Movie Banner:</b> <%= banner %></h4>
         <h5 style="color:blue"><strong><span >You save &dollar;0.99</span>,  discounted price is &dollar;<%= rent_amount %></strong></h5>
         <table>
         	<tr>
@@ -183,10 +182,13 @@ function getConfirmation()
         </table>
         <br/>
 
-<% if (quantity >= 0) { %>
+<% if (quantity > 0) { %>
 <form name="addToCartForm" method="post" action="/movie/cart/add/<%= m_id %>">
     <input type='hidden' name="hidden_m_name" id="cm_name" value="<%= m_name %>"/>
-	<input type='hidden'  id="hidden_rent_amount" name="crent_amount" value="<%= rent_amount %>"/>
+	<input type='hidden'  id="hidden_rent_amount" name="hidden_rent_amount" value="<%= rent_amount %>"/>
+	<input type='hidden'  id="hidden_m_banner" name="hidden_m_banner" value="<%= banner %>"/>
+	<input type='hidden'  id="hidden_cat" name="hidden_cat" value="<%= category %>"/>
+	<input type='hidden'  id="hidden_release_date" name="hidden_release_date" value="<%= release_date %>"/>
     <a class="button blue" onclick='return validateStock()' href="javascript:document.addToCartForm.submit()">add to cart</a>
 </form>
 <% } %>
@@ -214,6 +216,10 @@ function getConfirmation()
     <input type="hidden" name="param1" value="param1Value">
     <a class="button blue" onclick='return getConfirmation()' href="javascript:document.deleteForm.submit()">delete</a>
 </form>
+<form name="listRentedMembersForm" method="post" action="/listRentedMembers/<%= m_id %>">
+    <a class="button blue" href="javascript:document.addToCartForm.submit()">who rented?</a>
+</form>
+
 		</div>
 		<div class="clear"></div>
 </div>
@@ -262,7 +268,7 @@ function getConfirmation()
 			<ul class="post-list">
 			  	<li> 
 			  		<div class="frame">
-			  			<a href="#"><img src="/images/art/s1.jpg" /></a>
+			  			<a href="#"><img src="http://localhost:4400/images/art/s1.jpg" /></a>
 			  		</div>
 					<div class="meta">
 					    <h6><a href="#">Charming Winter</a></h6>
@@ -271,7 +277,7 @@ function getConfirmation()
 				</li>
 				<li> 
 			  		<div class="frame">
-			  			<a href="#"><img src="/images/art/s2.jpg" /></a>
+			  			<a href="#"><img src="http://localhost:4400/images/art/s2.jpg" /></a>
 			  		</div>
 					<div class="meta">
 					    <h6><a href="#">Trickling Stream</a></h6>
@@ -280,7 +286,7 @@ function getConfirmation()
 				</li>
 				<li> 
 			  		<div class="frame">
-			  			<a href="#"><img src="/images/art/s3.jpg" /></a>
+			  			<a href="#"><img src="http://localhost:4400/images/art/s3.jpg" /></a>
 			  		</div>
 					<div class="meta">
 					    <h6><a href="#">Morning Glory</a></h6>
@@ -305,6 +311,6 @@ function getConfirmation()
 	<div class="site-generator">Copyright Obscura 2012. Design by <a href="http://elemisfreebies.com">elemis</a>. All rights reserved.</div>
 </div>
 <!-- End Footer --> 
-<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="http://localhost:4400/js/scripts.js"></script>
 </body>
 </html>

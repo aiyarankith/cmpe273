@@ -92,33 +92,29 @@
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <a href="index.ejs">
-				<img src="http://localhost:4400/images/logo.png" alt="" />
-			</a>
+		    <% if (typeof admin_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
+		    <% } else { %>
+		    	<h2>Welcome</h2>
+		    <% } %>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-					<li class="active"><a href="index.ejs">Blog</a>
-						<ul>
-							<li><a href="post.ejs">Blog Post</a></li>
-						</ul>
-					</li>
-					<li><a href="page-with-sidebar.ejs">Pages</a>
-						<ul>
-							<li><a href="page-with-sidebar.ejs">Page With Sidebar</a></li>
-							<li><a href="full-width.ejs">Full Width</a></li>
-						</ul>
-					</li>
-					<li><a href="typography.ejs">Styles</a>
-						<ul>
-							<li><a href="typography.ejs"> Typography </a></li>
-							<li><a href="columns.ejs">Columns</a></li>
-						</ul>
-					</li>
-					<li><a href="contact.ejs">Contact</a></li>
+				<li class="active">
+				<a href="/admin_home">Home</a> </li>
+				<li><a href="userreg">Register New User </a></li>
+				<li><a href="/registermovie">Register New Movie </a></li>
+				<li><a href="/searchuser">Search </a></li>
+				<li><a href="/movie/cart/show">Cart </a></li>
+				<% if (typeof admin_fname != 'undefined') { %>
+					<li><a href="/logout">Logout</a></li>
+				<% } else { %>
+				<% } %>
+				
+						
 				</ul>
 			</div>
 		</div>
@@ -142,8 +138,9 @@
 				<td colspan="5">
 				<input type="search" class="light-table-filter" data-table="order-table" placeholder="Filter">
 				</td>
-			<tr/>
-	</table></td></tr>
+			</tr>
+	</table>
+	</td></tr>
 	<tr><td>
 	<table class="order-table table" style="margin:0;" id="rounded-corner">
 		<thead>
@@ -159,7 +156,7 @@
 		<tbody>
 			<% for(var i in movieResults){%>
 			<tr>
-				<td><a href="http://localhost:4400/cartHandler/<%=movieResults[i].MOVIE_ID%>"><%= movieResults[i].MOVIE_NAME %></a></td>
+				<td><a href="/movie/show/<%=movieResults[i].MOVIE_ID%>"><%= movieResults[i].MOVIE_NAME %></a></td>
 				<td><%= movieResults[i].MOVIE_BANNER%></td>
 				<td><%= movieResults[i].RELEASE_DATE%></td>
 				<td><%= movieResults[i].RENT_AMOUNT%></td>
@@ -177,7 +174,7 @@
 			<input type='hidden'  name='search' id='search' value="<%= search %>" />
 			<input type='hidden'  name='category' id='category' value="<%= category %>" />
 			<input type='hidden'  name='nextlast' id='nextlast' value="last" />
-			<input type="submit" name="last" value="last"/>
+			<input type="submit" name="last" value=" Last " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black" />
 		</form>
 	</td>
 		<td>
@@ -185,7 +182,7 @@
 			<input type='hidden'  name='search' id='search' value="<%= search %>" />
 			<input type='hidden'  name='category' id='category' value="<%= category %>" />
 			<input type='hidden'  name='nextlast' id='nextlast' value="next" />
-			<input type="submit" name="next" value="next"/>
+			<input type="submit" name="next" value=" Next " class="button yellow" style="font-face: 'Comic Sans MS'; font-size: larger; color: black"/>
 		</form>
 		</td>
 	</tr>
