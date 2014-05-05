@@ -119,7 +119,7 @@ function setEditForm(blockId, linkId) {
 		<h3>City : <%=results[i].city%> <br></h3>
 		<h3>State : <%=results[i].state%> <br></h3>
 		<h3>Zipcode : <%=results[i].zipcode%> <br></h3>
-		<a id="editOption" href="#" class="button yellow" onclick="setEditForm('editForm','editOption')">Edit</a> <a href="#" class="button green">Delete</a>
+		<a id="editOption" href="#" class="button yellow" onclick="setEditForm('editForm','editOption')">Edit</a> <a href="/deleteuser?uid=<%= results[i].user_id %>" class="button green">Delete</a>
 		<a href="#" class="button black">Return</a><a href="#" class="button yellow">Shop</a><br><br>
 		
 	<% } %>

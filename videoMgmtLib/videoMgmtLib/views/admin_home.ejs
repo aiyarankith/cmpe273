@@ -38,9 +38,9 @@
 		<!-- Begin Logo -->
 		<div class="logo">
 		    <% if (typeof admin_fname != 'undefined') { %>
-		    	Welcome, <%= admin_fname %>
+		    	<h2>Welcome, <%= admin_fname %></h2>
 		    <% } else { %>
-		    	Welcome
+		    	<h2>Welcome</h2>
 		    <% } %>
 	    </div>
 		<!-- End Logo -->
@@ -80,6 +80,17 @@
 <div class="info-box"><%=message%> and the User ID is <%= member_id %></div>
 <% } else { %>
 <% } %>
+
+<% if(typeof movie_added_message !== 'undefined') { %>
+<div class="info-box"><%=movie_added_message%> </div>
+<% } else { %>
+<% } %>
+
+<% if(typeof error_message !== 'undefined') { %>
+<div class="warning-box"><%=error_message%></div>
+<% } else { %>
+<% } %>
+
 <!-- Begin Blog Grid -->
 <div class="blog-wrap">
 	<!-- Begin Blog -->
@@ -125,9 +136,9 @@
 			<p>Search for the Movies by Movie ID, Movie Name, Banner, Category or Release Year</p>
 			
 			<div class="widget widget_search">
-			<form class="searchform" method="post" action="/showMovieList">
+			<form class="searchform" method="post" action="/showMovieList/0">
 					<input type="text" name="member_id" value="Member ID..." onFocus="this.value=''" required/>
-					<input type="text" name="search" value="search for..." onFocus="this.value=''" required/>
+					<input type="text" name="search" value="search for..." onFocus="this.value=''"/>
 					<br><br>
 					Search By : <select name="category"> <id="category">
 					<option value="MOVIE_NAME" default>Movie Name</option>

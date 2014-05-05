@@ -23,8 +23,6 @@
 <script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 <script type="text/javascript" src="js/mediaelement.min.js"></script>
 <script type="text/javascript" src="js/mediaelementplayer.min.js"></script>
-<script type="text/javascript" src="js/jquery.dcflickr.1.0.js"></script>
-<script type="text/javascript" src="js/twitter.min.js"></script>
 <script type="text/javascript">
 	$.backstretch("images/bg/1.jpg");
 </script>
@@ -37,41 +35,22 @@
 	<div class="header">
 		<!-- Begin Logo -->
 		<div class="logo">
-		    <a href="index.ejs">
-				<img src="images/logo.png" alt="" />
-			</a>
+		     <% if (typeof user_fname != 'undefined') { %>
+		    	<h2>Welcome, <%= user_fname %><h2>
+		    <% } else { %>
+		    	Welcome
+		    <% } %>
 	    </div>
 		<!-- End Logo -->
 		<!-- Begin Menu -->
 		<div id="menu-wrapper">
 			<div id="menu" class="menu">
 				<ul id="tiny">
-				
-					<li class="active"><a href="index.ejs">Blog</a>
-					
-						<ul>
-							<li><a href="post.ejs">Blog Post</a></li>
-						</ul>
-					</li>
-					<li><a href="#">Profile</a>
-						<ul>
-							<li><a href="/profile">My Details</a></li>
-							<li><a href="/mymovies">My Movies</a></li>
-						</ul>
-					</li>
-					<li><a href="page-with-sidebar.ejs">Pages</a>
-						<ul>
-							<li><a href="page-with-sidebar.ejs">Page With Sidebar</a></li>
-							<li><a href="full-width.ejs">Full Width</a></li>
-						</ul>
-					</li>
-					<li><a href="typography.ejs">Styles</a>
-						<ul>
-							<li><a href="typography.ejs"> Typography </a></li>
-							<li><a href="columns.ejs">Columns</a></li>
-						</ul>
-					</li>
-					<li><a href="contact.ejs">Contact</a></li>
+					<li class="active"><a href="profile">Home</a>
+					<% if (typeof user_member_id != 'undefined') { %>
+					<li><a href="/user_logout">Logout</a></li>
+				<% } else { %>
+				<% } %>
 				</ul>
 			</div>
 		</div>
@@ -83,55 +62,73 @@
 <!-- Begin Wrapper -->
 <div class="wrapper"><!-- Begin Intro -->
 <div class="intro"> VIDEO LIBRARY MANAGEMENT SYSTEM </div>
- <% if(typeof firstname!== 'undefined' && typeof lastname!== 'undefined') { %>
-         <h2>First Name: <%= firstname %> </h2>
-          <h2>Last Name: <%= lastname %> </h2>
-           <h2>Email: <%= email %> </h2>
-           <h2>Type of User: <%= type %> </h2>
-            <h2>Balance: $<%= balance %> </h2>
-             <h2>Street: <%= street %> </h2>
-             <h2>State: <%= state %> </h2>
-              <h2>City: <%= city %> </h2>
-              <h2>Zip Code: <%= zip %> </h2>
-         <% } %>
-         <a href="/changepass"> Change Password</a>
+
+<% if(typeof message !== 'undefined') { %>
+<div class="info-box"><%=message%></div>
+<% } else { %>
+<% } %>
+	
 <ul class="social">
 <li><a class="rss" href="#"></a></li><li><a class="facebook" href="#"></a></li><li><a class="twitter" href="#"></a></li><li><a class="pinterest" href="#"></a></li><li><a class="dribbble" href="#"></a></li><li><a class="flickr" href="#"></a></li><li><a class="linkedin" href="#"></a></li></ul><!-- End Intro --> 
 
 <!-- Begin Blog Grid -->
-<div class="blog-wrap">
-	<!-- Begin Blog -->
-	<div class="blog-grid">
-		<!-- Begin Image Format -->
-		<div class="post format-image box"> 
-			<div class="frame">
+<div class="box">
+<% if (typeof user_fname != 'undefined') { %>
+			<h2 class="title"><h2>Member Details</a></h2><br><br>
+			<% for (var i in member_details) { %>
+			
+				<h3>Full Name : <%=member_details[i].first_name%> <%=member_details[i].last_name%><br></h3>
+				<h3>Email : <%=member_details[i].EMAIL%><br></h3>
+				<h3>User Type : <%=member_details[i].type_of_user%><br></h3>
+				<h3>Account Balance : $<%=member_details[i].balance%> <br></h3>
+				<h3>Street Address : <%=member_details[i].street%> <br></h3>
+				<h3>City : <%=member_details[i].city%> <br></h3>
+				<h3>State : <%=member_details[i].state%> <br></h3>
+				<h3>Zipcode : <%=member_details[i].zipcode%> <br></h3>
+				<a id="editOption" href="/changepass" class="button yellow">Change Password</a> <br><br>
 				
-			</div>
-			<h2 class="title"><a href="post.ejs">Morning Glory</a></h2>
-			<p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of autumn which I enjoy with my whole heart.</p>
-			<div class="details">
-				<span class="icon-image"><a href="#">September 26, 2012</a></span>
-				<span class="likes"><a href="#" class="likeThis">44</a></span>
-				<span class="comments"><a href="#">3</a></span>
-			</div>
+			<% } %>
+			
+			<h2>Movie History</h2>
+
+	
+	<% if (movie_details.length > 1) { %>		
+	
+	<center><h2>Movie Rented in the Past</h2>	</center>
+		<table>
+			<tr>
+				<th>Transaction ID</th>
+				<th>Movie Name</th>
+				<th>Movie Banner</th>
+				<th>Movie Release Date</th>
+				<th>Rent Amount</th>
+				<th>IsReturned</th>
+			</tr>
+			<% for (var i in movie_details) {  %>
+			<tr>
+				<td><%=movie_details[i].transaction_id%></td>
+				<td><%=movie_details[i].movie_name%></td>
+				<td><%=movie_details[i].movie_banner%></td>
+				<td><%=movie_details[i].release_date%></td>
+				<td><%=movie_details[i].rent_amount%></td>
+				<% if (movie_details[i].is_returned == 1) { %>
+					<td><b>Pending</b></td>
+				<% } else { %>
+					<td>Returned</td>
+				<% } %>
+			</tr>
+			<% } %>
+		</table>
+	<% } else { %>
+		<h6> No Movie History to Display </h6>
+	<% } %>
+	<% } else { %>
+	<% } %>
 		</div>
 		<!-- End Image Format -->
 
  	
-		<!-- Begin Quote Format -->
-		<div class="post format-quote box"> 
-			<blockquote>Scissors cuts paper, paper covers rock, rock crushes lizard, lizard poisons Spock, Spock smashes scissors, scissors decapitates lizard, lizard eats paper, paper disproves Spock, Spock vaporizes rock, and as it always has, rock crushes scissors.<cite>Sheldon Cooper</cite></blockquote>	
-			<div class="details">
-				<span class="icon-quote"><a href="#">September 21, 2012</a></span>
-				<span class="likes"><a href="#" class="likeThis">27</a></span>
-				<span class="comments"><a href="#">4</a></span>
-			</div>
-	
-		</div>
-		<!-- End Quote Format --> 	
-		</div>
-		</div>
-		<!-- Begin Footer -->
+			<!-- Begin Footer -->
 <div class="footer-wrapper">
 <div id="footer" class="four">
 		<div id="first" class="widget-area">

@@ -96,23 +96,56 @@ exports.unPublish = function (req, res) {
 };
 
 exports.showMovieList = function (req, res) {
-	//var ejs = require("ejs");
 	var sqlquery = require('./dbConnectivity/mysqlQuery');
+	if(req.session.mem_id == null)
+	{
+		req.session.mem_id = req.param('member_id');
+		console.log("*******************"+req.session.mem_id);
+	}
 	//connection.escape(userId) to avoid SQL Injection attacks
 	var searchCriteria = req.param('search');
 	var category = req.param('category');
-	req.session.index = 0;
-	console.log('search criteria  '+ searchCriteria );
-	var sqlStmt = "select * from MOVIES where "+category+" like '%"+ searchCriteria +"%'";
+	var movieIndex = req.param('movieIndex');
+	var nextlast = req.param('nextlast');
+	var sqlStmt = '';
+	if(movieIndex===''){
+		if(nextlast==='next')
+		{
+			sqlStmt = "select * from MOVIES limit "+movieIndex+",10";
+			movieIndex = parseInt(movieIndex) + 10;
+		}
+		else
+		{
+			if(movieIndex<20)
+			{movieIndex=0;}
+			else
+			{movieIndex = parseInt(movieIndex) - 20;}
+			sqlStmt = "select * from MOVIES limit "+movieIndex+",10";
+			movieIndex = parseInt(movieIndex) + 10;
+		}
+	}
+	else{
+		if(nextlast==='next')
+		{
+			sqlStmt = "select * from MOVIES where "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
+			movieIndex = parseInt(movieIndex) + 10;
+		}
+		else
+		{
+			if(movieIndex<20)
+			{movieIndex=0;}
+			else
+			{movieIndex = parseInt(movieIndex) - 20;}
+			sqlStmt = "select * from MOVIES where "+category+" like '%"+ searchCriteria +"%' limit "+movieIndex+",10";
+			movieIndex = parseInt(movieIndex) + 10;
+		}	
+	}
 	var params = [];
 	sqlquery.execQuery(sqlStmt, params, function(err, rows) {
 		console.log(rows.length);
 		if(rows.length !== 0) {
-			req.session.movielist = rows;
-			req.session.datalength = rows.length;
-			req.session.currentPage = 1;
 			res.render('movielist.ejs',
-					{movieResults:rows,index:req.session.index,datalength:req.session.datalength,currentPage:req.session.currentPage},
+					{movieResults:rows,movieIndex:movieIndex,category:category,search:searchCriteria},
 					function(err, result) {
 						if (!err) {res.end(result);}
 						else {res.end('An error occurred');console.log(err);}
@@ -121,71 +154,12 @@ exports.showMovieList = function (req, res) {
 		else
 		{
 			console.log('no data found');
+			res.render('movielist.ejs',
+					{movieResults:[],movieIndex:movieIndex,category:category,search:searchCriteria},
+					function(err, result) {
+						if (!err) {res.end(result);}
+						else {res.end('An error occurred');console.log(err);}
+					});
 		}
 	});
 };
-
-exports.nextPage = function (req, res) {
-	//var ejs = require("ejs");
-	index = req.param('movieIndex');
-	movielist = {list: req.param('hidden_mlist')};
-	console.log(JSON.stringify(movielist));
-	console.log(movielist.list);
-	console.log(movielist[0].list);
-	console.log(movielist[0].list[0].movie_id);
-	currentPage = req.param('hidden_current') +1;
-	datalength = req.param('hidden_datalength');
-	console.log(req.param('movieIndex'));
-	console.log(req.param("hidden_mlist"));
-	console.log(req.param("hidden_current"));
-	console.log(req.param("hidden_datalength"));
-	//req.session.currentPage = req.session.currentPage +1;
-	res.render('movielist.ejs',
-			{movieResults:JSON.parse(JSON.stringify(movielist)), index:index,datalength:datalength,currentPage:currentPage},
-			function(err, result) {
-				if (!err) {res.end(result);}
-				else {res.end('An error occurred');console.log(err);}
-			});
-};
-
-exports.lastPage = function (req, res) {
-	//var ejs = require("ejs");
-	//req.session.index = req.param('movieIndex');
-	req.session.movielist = req.param('hidden_mlist');
-	req.session.currentPage = req.param('hidden_current') ;
-	req.session.datalength = req.param('hidden_datalength');
-	if(req.param('movieIndex')<10)
-	{req.session.index = 0;}
-	else
-	{req.session.index = req.param('movieIndex')-10;}
-	console.log(req.session.index);
-	req.session.currentPage = req.session.currentPage -1;
-	res.render('movielist.ejs',
-			{movieResults:req.session.movielist, index:req.session.index,datalength:req.session.datalength,currentPage:req.session.currentPage},
-			function(err, result) {
-				if (!err) {res.end(result);}
-				else {res.end('An error occurred');console.log(err);}
-			});
-};
-/*
- * 
-	var query = require('./dbConnectivity/mysqlQuery');
-	//connection.escape(userId) to avoid SQL Injection attacks
-	var sqlStmt = "select count(*) as isValidLogin, last_login_ts as lastLoginTS from login_detail where user_id=? and password=?";
-	var isLoggedIn = false;
-	var lastLoginTS = null;
-	var params = [req.param('email'), req.param('password')];
-	query.execQuery(sqlStmt, params, function(err, rows) {
-		console.log(rows);
-		if(rows.length !== 0) {
-			if (rows[0].isValidLogin === 1) {
-				lastLoginTS = rows[0].lastLoginTS;
-				req.session.username = req.param('email');
-				req.session.isLoggedin = true;
-				var backURL=req.header('Referer') || '/';
-				console.log(backURL);
-				if (backURL.indexOf('login', 0) === -1 && backURL.indexOf('register', 0) === -1) {
-					res.statusCode = 302;
-					res.redirect(backURL);
-				} else {
-					res.render('index', { titile: 'A2Z', layout:false, locals: { username: req.ses*/
